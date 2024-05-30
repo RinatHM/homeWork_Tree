@@ -1,58 +1,56 @@
 package src.tree;
+
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.Serializable;
-
 public class Human implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     private String name;
+    private Gender gender;
     private String birthDate;
     private String deathDate;
-    private Gender gender;
+    private List<Human> children;
 
-    public Human(String name, String birthDate, String deathDate, Gender gender) {
+    public Human(String name, Gender gender, String birthDate, String deathDate) {
         this.name = name;
+        this.gender = gender;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
-        this.gender = gender;
+        this.children = new ArrayList<>();
     }
 
-    // геттеры и сеттеры
+    public void addChild(Human child) {
+        children.add(child);
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getDeathDate() {
-        return deathDate;
-    }
-
-    public void setDeathDate(String deathDate) {
-        this.deathDate = deathDate;
     }
 
     public Gender getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+    public List<Human> getChildren() {
+        return children;
+    }
+
+    @Override
+    public String toString() {
+        return "Human{" +
+                "name='" + name + '\'' +
+                ", gender=" + gender +
+                ", birthDate='" + birthDate + '\'' +
+                ", deathDate='" + deathDate + '\'' +
+                ", children=" + children +
+                '}';
     }
 }
-

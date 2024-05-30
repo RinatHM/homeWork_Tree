@@ -1,7 +1,5 @@
 package src.tree;
 
-import java.io.Serializable;
-
-public enum Gender implements Serializable {
+public enum Gender {
     MALE, FEMALE
 }
