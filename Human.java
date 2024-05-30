@@ -45,12 +45,7 @@ public class Human implements Serializable {
 
     @Override
     public String toString() {
-        return "Human{" +
-                "name='" + name + '\'' +
-                ", gender=" + gender +
-                ", birthDate='" + birthDate + '\'' +
-                ", deathDate='" + deathDate + '\'' +
-                ", children=" + children +
-                '}';
+        return name + " (" + gender + "), " + birthDate + " - " + (deathDate != null ? deathDate : "present");
+
     }
 }

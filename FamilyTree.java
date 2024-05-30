@@ -33,8 +33,10 @@ public class FamilyTree implements Serializable {
 
     @Override
     public String toString() {
-        return "FamilyTree{" +
-                "familyMembers=" + familyMembers +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        for (Human member : familyMembers) {
+            sb.append(member).append("\n");
+        }
+        return sb.toString();
     }
 }

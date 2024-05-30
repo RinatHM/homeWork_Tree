@@ -68,7 +68,7 @@ public class Main {
 
         try {
             FamilyTree loadedFamilyTree = FamilyTree.loadFromFile("tree.txt");
-            System.out.println("Loaded family tree: " + loadedFamilyTree);
+            System.out.println("Loaded family tree: \n" + loadedFamilyTree);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
