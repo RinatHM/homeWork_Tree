@@ -1,51 +1,63 @@
-package src.tree;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Human implements Serializable {
+    private int id;
     private String name;
+    private int birthYear;
+    private int deathYear;
     private Gender gender;
-    private String birthDate;
-    private String deathDate;
-    private List<Human> children;
 
-    public Human(String name, Gender gender, String birthDate, String deathDate) {
+    public Human(int id, String name, int birthYear, Gender gender) {
+        this.id = id;
         this.name = name;
+        this.birthYear = birthYear;
+        this.deathYear = 0; // 0 means still alive
         this.gender = gender;
-        this.birthDate = birthDate;
-        this.deathDate = deathDate;
-        this.children = new ArrayList<>();
     }
 
-    public void addChild(Human child) {
-        children.add(child);
+    public Human(int id, String name, int birthYear, int deathYear, Gender gender) {
+        this.id = id;
+        this.name = name;
+        this.birthYear = birthYear;
+        this.deathYear = deathYear;
+        this.gender = gender;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
         return name;
     }
 
+    public int getBirthYear() {
+        return birthYear;
+    }
+
+    public int getDeathYear() {
+        return deathYear;
+    }
+
     public Gender getGender() {
         return gender;
     }
 
-    public String getBirthDate() {
-        return birthDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDeathDate() {
-        return deathDate;
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
     }
 
-    public List<Human> getChildren() {
-        return children;
+    public void setDeathYear(int deathYear) {
+        this.deathYear = deathYear;
     }
 
     @Override
     public String toString() {
-        return name + " (" + gender + "), " + birthDate + " - " + (deathDate != null ? deathDate : "present");
-
+        return String.format("ID: %d, Name: %s, Birth Year: %d, Death Year: %d, Gender: %s",
+                id, name, birthYear, deathYear == 0 ? "Alive" : deathYear, gender);
     }
 }
