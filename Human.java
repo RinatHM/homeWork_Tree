@@ -1,4 +1,5 @@
 package src.tree;
+
 import java.io.Serializable;
 
 public class Human implements Serializable {
@@ -7,14 +8,6 @@ public class Human implements Serializable {
     private int birthYear;
     private int deathYear;
     private Gender gender;
-
-    public Human(int id, String name, int birthYear, Gender gender) {
-        this.id = id;
-        this.name = name;
-        this.birthYear = birthYear;
-        this.deathYear = 0; // 0 means still alive
-        this.gender = gender;
-    }
 
     public Human(int id, String name, int birthYear, int deathYear, Gender gender) {
         this.id = id;
@@ -56,9 +49,13 @@ public class Human implements Serializable {
         this.deathYear = deathYear;
     }
 
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
-        return String.format("ID: %d, Name: %s, Birth Year: %d, Death Year: %d, Gender: %s",
-                id, name, birthYear, deathYear == 0 ? "Alive" : deathYear, gender);
+        return String.format("ID: %d, Name: %s, Birth Year: %d, Death Year: %s, Gender: %s",
+                id, name, birthYear, deathYear == 0 ? "N/A" : String.valueOf(deathYear), gender);
     }
 }

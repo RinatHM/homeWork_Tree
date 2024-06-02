@@ -1,45 +1,50 @@
 package src.tree;
+
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class FamilyTree implements Serializable {
-    private List<Human> people;
+    private List<Human> familyMembers;
+    private int currentId;
 
     public FamilyTree() {
-        this.people = new ArrayList<>();
+        this.familyMembers = new ArrayList<>();
+        this.currentId = 1;
     }
 
-    public void addPerson(Human person) {
-        this.people.add(person);
-    }
-
-    public void removePerson(int id) {
-        this.people.removeIf(person -> person.getId() == id);
-    }
-
-    public Human getPersonById(int id) {
-        return this.people.stream().filter(person -> person.getId() == id).findFirst().orElse(null);
-    }
-
-    public List<Human> getPeople() {
-        return this.people;
-    }
-
-    public int getNextId() {
-        return this.people.size() + 1;
+    public void addHuman(String name, int birthYear, int deathYear, Gender gender) {
+        familyMembers.add(new Human(currentId++, name, birthYear, deathYear, gender));
     }
 
     public void sortByName() {
-        this.people.sort(Comparator.comparing(Human::getName));
+        familyMembers.sort(Comparator.comparing(Human::getName));
     }
 
-    public void sortByAge() {
-        this.people.sort(Comparator.comparingInt(Human::getBirthYear));
+    public void sortByBirthYear() {
+        familyMembers.sort(Comparator.comparingInt(Human::getBirthYear));
+    }
+
+    public void updateHuman(int id, String newName, int newBirthYear, int newDeathYear, Gender newGender) {
+        for (Human human : familyMembers) {
+            if (human.getId() == id) {
+                human.setName(newName);
+                human.setBirthYear(newBirthYear);
+                human.setDeathYear(newDeathYear);
+                human.setGender(newGender);
+                break;
+            }
+        }
+    }
+
+    public void removeHuman(int id) {
+        familyMembers.removeIf(human -> human.getId() == id);
     }
 
     public void printFamilyTree() {
-        for (Human person : people) {
-            System.out.println(person);
+        for (Human human : familyMembers) {
+            System.out.println(human);
         }
     }
 }

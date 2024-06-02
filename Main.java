@@ -1,30 +1,29 @@
 package src.tree;
-import java.io.*;
-import java.util.*;
+
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         FamilyTree familyTree = new FamilyTree();
 
-        // Добавление первоначальных данных
-        familyTree.addPerson(new Human(1, "Ринат", 1967, Gender.MALE));
-        familyTree.addPerson(new Human(2, "Раиля", 1980, Gender.FEMALE));
-        familyTree.addPerson(new Human(3, "Халим", 1937, 2019, Gender.MALE));
-        familyTree.addPerson(new Human(4, "Гульсум", 1940, Gender.FEMALE));
-        familyTree.addPerson(new Human(5, "Шамгиямал", 1917, 1987, Gender.FEMALE));
-        familyTree.addPerson(new Human(6, "Шарафей", 1913, 1992, Gender.MALE));
-        familyTree.addPerson(new Human(7, "Фатима", 1915, 1983, Gender.FEMALE));
-        familyTree.addPerson(new Human(8, "Салим", 1910, 1943, Gender.MALE));
-        familyTree.addPerson(new Human(9, "Тимур", 1994, Gender.MALE));
-        familyTree.addPerson(new Human(10, "Артём", 2005, Gender.MALE));
-        familyTree.addPerson(new Human(11, "Карим", 2017, Gender.MALE));
-        familyTree.addPerson(new Human(12, "Ясмина", 2017, Gender.FEMALE));
-        familyTree.addPerson(new Human(13, "Азалия", 2019, Gender.FEMALE));
-        familyTree.addPerson(new Human(14, "Халида", 1962, Gender.FEMALE));
-        familyTree.addPerson(new Human(15, "Лариса", 1966, Gender.FEMALE));
+        // Adding initial family members
+        familyTree.addHuman("Ринат", 1967, 0, Gender.MALE);
+        familyTree.addHuman("Раиля", 1980, 0, Gender.FEMALE);
+        familyTree.addHuman("Халим", 1937, 2019, Gender.MALE);
+        familyTree.addHuman("Гульсум", 1940, 0, Gender.FEMALE);
+        familyTree.addHuman("Шамгиямал", 1917, 1987, Gender.FEMALE);
+        familyTree.addHuman("Шарафей", 1913, 1992, Gender.MALE);
+        familyTree.addHuman("Фатима", 1915, 1983, Gender.FEMALE);
+        familyTree.addHuman("Салим", 1910, 1943, Gender.MALE);
+        familyTree.addHuman("Тимур", 1994, 0, Gender.MALE);
+        familyTree.addHuman("Артём", 2005, 0, Gender.MALE);
+        familyTree.addHuman("Карим", 2017, 0, Gender.MALE);
+        familyTree.addHuman("Ясмина", 2017, 0, Gender.FEMALE);
+        familyTree.addHuman("Азалия", 2019, 0, Gender.FEMALE);
+        familyTree.addHuman("Халида", 1962, 0, Gender.FEMALE);
+        familyTree.addHuman("Лариса", 1966, 0, Gender.FEMALE);
 
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             System.out.println("Приветствие! Какое действие необходимо сделать? Введите число от 1 до 5:");
             System.out.println("1 - Добавить человека");
@@ -36,113 +35,63 @@ public class Main {
             System.out.println("0 - Выйти");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            scanner.nextLine(); // consume the newline
 
             switch (choice) {
                 case 1:
-                    addPerson(familyTree, scanner);
+                    System.out.println("Введите имя:");
+                    String name = scanner.nextLine();
+                    System.out.println("Введите год рождения:");
+                    int birthYear = scanner.nextInt();
+                    System.out.println("Введите год смерти (или 0, если жив):");
+                    int deathYear = scanner.nextInt();
+                    scanner.nextLine(); // consume the newline
+                    System.out.println("Введите пол (MALE/FEMALE):");
+                    Gender gender = Gender.valueOf(scanner.nextLine().toUpperCase());
+                    familyTree.addHuman(name, birthYear, deathYear, gender);
                     break;
                 case 2:
                     familyTree.sortByName();
+                    System.out.println("Отсортировано по имени:");
+                    familyTree.printFamilyTree();
                     break;
                 case 3:
-                    familyTree.sortByAge();
+                    familyTree.sortByBirthYear();
+                    System.out.println("Отсортировано по возрасту:");
+                    familyTree.printFamilyTree();
                     break;
                 case 4:
-                    editPerson(familyTree, scanner);
+                    System.out.println("Введите ID человека для редактирования:");
+                    int id = scanner.nextInt();
+                    scanner.nextLine(); // consume the newline
+                    System.out.println("Введите новое имя:");
+                    String newName = scanner.nextLine();
+                    System.out.println("Введите новый год рождения:");
+                    int newBirthYear = scanner.nextInt();
+                    System.out.println("Введите новый год смерти (или 0, если жив):");
+                    int newDeathYear = scanner.nextInt();
+                    scanner.nextLine(); // consume the newline
+                    System.out.println("Введите новый пол (MALE/FEMALE):");
+                    Gender newGender = Gender.valueOf(scanner.nextLine().toUpperCase());
+                    familyTree.updateHuman(id, newName, newBirthYear, newDeathYear, newGender);
                     break;
                 case 5:
-                    deletePerson(familyTree, scanner);
+                    System.out.println("Введите ID человека для удаления:");
+                    int removeId = scanner.nextInt();
+                    scanner.nextLine(); // consume the newline
+                    familyTree.removeHuman(removeId);
                     break;
                 case 6:
                     familyTree.printFamilyTree();
                     break;
                 case 0:
-                    saveToFile(familyTree, "tree.txt");
+                    System.out.println("Выход.");
+                    scanner.close();
                     return;
                 default:
-                    System.out.println("Неверный выбор. Попробуйте снова.");
+                    System.out.println("Некорректный ввод, попробуйте снова.");
+                    break;
             }
-        }
-    }
-
-    private static void addPerson(FamilyTree familyTree, Scanner scanner) {
-        System.out.println("Введите имя:");
-        String name = scanner.nextLine();
-        System.out.println("Введите год рождения:");
-        int birthYear = scanner.nextInt();
-        System.out.println("Введите пол (MALE/FEMALE):");
-        Gender gender = Gender.valueOf(scanner.next().toUpperCase());
-        System.out.println("Введите год смерти (или 0, если жив):");
-        int deathYear = scanner.nextInt();
-
-        Human person = deathYear == 0 ?
-                new Human(familyTree.getNextId(), name, birthYear, gender) :
-                new Human(familyTree.getNextId(), name, birthYear, deathYear, gender);
-
-        familyTree.addPerson(person);
-    }
-
-    private static void editPerson(FamilyTree familyTree, Scanner scanner) {
-        System.out.println("Введите ID человека для редактирования:");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        Human person = familyTree.getPersonById(id);
-        if (person == null) {
-            System.out.println("Человек с таким ID не найден.");
-            return;
-        }
-
-        System.out.println("Введите новое имя (или нажмите Enter для пропуска):");
-        String name = scanner.nextLine();
-        if (!name.isEmpty()) {
-            person.setName(name);
-        }
-
-        System.out.println("Введите новый год рождения (или 0 для пропуска):");
-        int birthYear = scanner.nextInt();
-        if (birthYear != 0) {
-            person.setBirthYear(birthYear);
-        }
-
-        System.out.println("Введите новый год смерти (или 0 для пропуска):");
-        int deathYear = scanner.nextInt();
-        if (deathYear != 0) {
-            person.setDeathYear(deathYear);
-        }
-    }
-
-    private static void deletePerson(FamilyTree familyTree, Scanner scanner) {
-        System.out.println("Введите ID человека для удаления:");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-
-        Human person = familyTree.getPersonById(id);
-        if (person == null) {
-            System.out.println("Человек с таким ID не найден.");
-            return;
-        }
-
-        System.out.println("Вы уверены, что хотите удалить " + person.getName() + "? (yes/no)");
-        String confirmation = scanner.nextLine();
-        if (confirmation.equalsIgnoreCase("yes")) {
-            familyTree.removePerson(id);
-            System.out.println("Человек удалён.");
-        } else {
-            System.out.println("Удаление отменено.");
-        }
-    }
-
-    private static void saveToFile(FamilyTree familyTree, String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Human person : familyTree.getPeople()) {
-                writer.write(person.toString());
-                writer.newLine();
-            }
-            System.out.println("Данные сохранены в " + filename);
-        } catch (IOException e) {
-            System.out.println("Ошибка при сохранении данных: " + e.getMessage());
         }
     }
 }
