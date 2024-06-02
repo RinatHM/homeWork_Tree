@@ -1,3 +1,5 @@
+package src.tree;
+import java.io.Serializable;
 import java.util.*;
 
 public class FamilyTree implements Serializable {
