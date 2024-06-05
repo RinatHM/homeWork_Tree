@@ -1,4 +1,4 @@
-package src.tree;
+package src.tree.src;
 
 import java.io.Serializable;
 

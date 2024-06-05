@@ -1,26 +1,36 @@
 package src.tree.src;
-
+import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
-        // Создаем узлы дерева
-        TreeNode<FamilyMember> rinat = new TreeNode<>(new FamilyMember("Ринат"));
-        TreeNode<FamilyMember> child1 = new TreeNode<>(new FamilyMember("Ильдар"));
-        TreeNode<FamilyMember> child2 = new TreeNode<>(new FamilyMember("Алия"));
-        TreeNode<FamilyMember> grandchild1 = new TreeNode<>(new FamilyMember("Рамиль"));
-        TreeNode<FamilyMember> grandchild2 = new TreeNode<>(new FamilyMember("Лейла"));
+        TreeNode<String> root = new TreeNode<>("Ринат");
+        FamilyTree<String> familyTree = new FamilyTree<>(root);
+        FamilyTreeView view = new ConsoleFamilyTreeView();
+        FamilyTreePresenter presenter = new FamilyTreePresenter(familyTree, view);
 
-        // Строим дерево
-        rinat.addChild(child1);
-        rinat.addChild(child2);
-        child1.addChild(grandchild1);
-        child2.addChild(grandchild2);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("Выберите команду: add, remove, display, exit");
+            String command = scanner.nextLine();
 
-        // Создаем дерево
-        Tree<FamilyMember> familyTree = new Tree<>(rinat);
-
-        // Используем итератор для обхода дерева
-        for (FamilyMember member : familyTree) {
-            System.out.println(member);
+            switch (command) {
+                case "add":
+                    String parentName = view.getInput("Введите имя родителя: ");
+                    String newMemberName = view.getInput("Введите имя нового члена: ");
+                    presenter.addMember(parentName, newMemberName);
+                    break;
+                case "remove":
+                    String memberName = view.getInput("Введите имя члена для удаления: ");
+                    presenter.removeMember(memberName);
+                    break;
+                case "display":
+                    presenter.displayFamilyTree();
+                    break;
+                case "exit":
+                    return;
+                default:
+                    view.showMessage("Неизвестная команда");
+                    break;
+            }
         }
     }
 }

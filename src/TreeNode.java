@@ -16,24 +16,15 @@ class TreeNode<T> {
         children.add(child);
     }
 
+    public void removeChild(TreeNode<T> child) {
+        children.remove(child);
+    }
+
     public T getData() {
         return data;
     }
 
     public List<TreeNode<T>> getChildren() {
         return children;
-    }
-}
-
-class FamilyMember {
-    String name;
-
-    public FamilyMember(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 }

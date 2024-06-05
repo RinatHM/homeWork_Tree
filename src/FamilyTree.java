@@ -1,88 +1,63 @@
+package src.tree.src;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Queue;
+import java.util.Stack;
 
-class FamilyTree implements Iterable<FamilyTree.Person> {
-    private Person root;
+class FamilyTree<T> implements Iterable<T> {
+    private TreeNode<T> root;
 
-    public FamilyTree(Person root) {
+    public FamilyTree(TreeNode<T> root) {
         this.root = root;
     }
 
+    public TreeNode<T> getRoot() {
+        return root;
+    }
+
+    public TreeNode<T> findMember(T data) {
+        if (root == null) return null;
+        Stack<TreeNode<T>> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode<T> current = stack.pop();
+            if (current.getData().equals(data)) {
+                return current;
+            }
+            for (int i = current.getChildren().size() - 1; i >= 0; i--) {
+                stack.push(current.getChildren().get(i));
+            }
+        }
+        return null;
+    }
+
     @Override
-    public Iterator<Person> iterator() {
-        return new FamilyTreeIterator(root);
+    public Iterator<T> iterator() {
+        return new DFSIterator<>(root);
     }
 
-    // Класс Person предполагается, что у него есть дети, представляющие собой список или другой контейнер
-    static class Person {
-        String name;
-        List<Person> children;
+    private static class DFSIterator<T> implements Iterator<T> {
+        private Stack<TreeNode<T>> stack = new Stack<>();
 
-        public Person(String name) {
-            this.name = name;
-            this.children = new LinkedList<>();
-        }
-
-        public void addChild(Person child) {
-            children.add(child);
-        }
-
-        public List<Person> getChildren() {
-            return children;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
-
-    // Реализация итератора для FamilyTree
-    private static class FamilyTreeIterator implements Iterator<Person> {
-        private Queue<Person> queue;
-
-        public FamilyTreeIterator(Person root) {
-            queue = new LinkedList<>();
+        public DFSIterator(TreeNode<T> root) {
             if (root != null) {
-                queue.add(root);
+                stack.push(root);
             }
         }
 
         @Override
         public boolean hasNext() {
-            return !queue.isEmpty();
+            return !stack.isEmpty();
         }
 
         @Override
-        public Person next() {
+        public T next() {
             if (!hasNext()) {
-                throw new NoSuchElementException();
+                throw new IllegalStateException("No more elements");
             }
-            Person current = queue.poll();
-            queue.addAll(current.getChildren());
-            return current;
-        }
-    }
-
-    public static void main(String[] args) {
-        Person root = new Person("Root");
-        Person child1 = new Person("Child 1");
-        Person child2 = new Person("Child 2");
-        Person grandChild1 = new Person("GrandChild 1");
-        Person grandChild2 = new Person("GrandChild 2");
-
-        root.addChild(child1);
-        root.addChild(child2);
-        child1.addChild(grandChild1);
-        child2.addChild(grandChild2);
-
-        FamilyTree familyTree = new FamilyTree(root);
-
-        for (Person person : familyTree) {
-            System.out.println(person);
+            TreeNode<T> current = stack.pop();
+            for (int i = current.getChildren().size() - 1; i >= 0; i--) {
+                stack.push(current.getChildren().get(i));
+            }
+            return current.getData();
         }
     }
 }
